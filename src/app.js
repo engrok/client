@@ -3,15 +3,15 @@ const socket = new WebSocket('ws://localhost:8080');
 const axios = require('axios');
 const ip = '127.0.0.1', port = '3000';
 
-socket.onmessage = (event) => {
-    let processedData = processServerMessage(event.data);
-    let neededUrl = processedData.url;
-    let neededHeaders = processedData.headers;
+socket.onmessage = (message) => {
+    let processed = processServerMessage(message);
+    let url = processed.url;
+    let headers = processed.headers;
 
     const config = {
         method: 'get',
-        url: `http://${ip}:${port}${neededUrl}`,
-        headers: neededHeaders
+        url: `http://${ip}:${port}${url}`,
+        headers: headers
     };
 
     axios(config).then(function (response) {
@@ -24,11 +24,11 @@ socket.onmessage = (event) => {
     });
 };
 
-function processServerMessage(dataArg) {
-    data = JSON.parse(dataArg);
-    let host = data.headers.host;
-    dataArg = dataArg.replace(new RegExp(host, "g"), `${ip}:${port}`);
-    return JSON.parse(dataArg);
+function processServerMessage(message) {
+    let msgData = message.data;
+    let host = JSON.parse(msgData).headers.host;
+    msgData = msgData.replace(new RegExp(host, 'g'), `${ip}:${port}`);
+    return JSON.parse(msgData);
 }
 
 function processLocalServerResponse(response) {
