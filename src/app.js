@@ -15,7 +15,7 @@ socket.onmessage = (message) => {
     };
 
     axios(config).then(function (response) {
-        let processedRes = processLocalServerResponse(response);
+        let processedRes = processLocalServerResponse(response, processed);
         socket.send(JSON.stringify(processedRes));
     }).catch(function (error) {
         // TODO
@@ -31,9 +31,10 @@ function processServerMessage(message) {
     return JSON.parse(msgData);
 }
 
-function processLocalServerResponse(response) {
+function processLocalServerResponse(response, processed) {
     return {
         data: response.data,
-        headers: response.headers
+        headers: response.headers,
+        id: processed.id
     };
 }
