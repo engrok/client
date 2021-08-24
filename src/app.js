@@ -9,7 +9,7 @@ socket.onmessage = (message) => {
     let headers = processed.headers;
 
     const config = {
-        method: 'get',
+        method: processed.method,
         url: `http://${ip}:${port}${url}`,
         headers: headers
     };
