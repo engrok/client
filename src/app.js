@@ -2,6 +2,13 @@ const WebSocket = require('ws');
 const socket = new WebSocket('ws://localhost:8080');
 const axios = require('axios');
 const ip = '127.0.0.1';
+
+if (process.argv.length < 3) {
+    console.log("Please specify the port");
+    console.log("Usage: npm start <port>\n");
+    process.exit(0);
+}
+
 const port = process.argv[2];
 
 socket.onmessage = (message) => {
