@@ -1,7 +1,8 @@
 const WebSocket = require('ws');
 const socket = new WebSocket('ws://localhost:8080');
 const axios = require('axios');
-const ip = '127.0.0.1', port = '3000';
+const ip = '127.0.0.1';
+const port = process.argv[2];
 
 socket.onmessage = (message) => {
     let processed = processServerMessage(message);
@@ -11,17 +12,16 @@ socket.onmessage = (message) => {
     const config = {
         method: processed.method,
         url: `http://${ip}:${port}${url}`,
-        headers: headers
+        headers: headers,
+        validateStatus: null
     };
 
     axios(config).then(function (response) {
         let processedRes = processLocalServerResponse(response, processed);
         socket.send(JSON.stringify(processedRes));
     }).catch(function (error) {
-        // TODO
-    }).then(function () {
-        // TODO
-    });
+        console.log(error);
+    })
 };
 
 function processServerMessage(message) {
