@@ -20,6 +20,7 @@ socket.onmessage = (message) => {
         method: processed.method,
         url: `http://${ip}:${port}${url}`,
         headers: headers,
+        maxRedirects: 0,
         validateStatus: null
     };
 
@@ -42,6 +43,7 @@ function processLocalServerResponse(response, processed) {
     return {
         data: response.data,
         headers: response.headers,
-        id: processed.id
+        id: processed.id,
+        status: response.status
     };
 }
