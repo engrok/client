@@ -26,9 +26,10 @@ socket.onmessage = (message) => {
 
     axios(config).then(function (response) {
         let processedRes = processLocalServerResponse(response, processed);
-        socket.send(JSON.stringify(processedRes));
+        socket.send(JSON.stringify({ result: true, data: processedRes }));
     }).catch(function (error) {
         console.log(error);
+        socket.send(JSON.stringify({ result: false, data: { id: processed.id } }));
     })
 };
 
