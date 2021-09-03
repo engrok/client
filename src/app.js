@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const socket = new WebSocket('ws://localhost:8080');
+const socket = new WebSocket('ws://207.154.211.157:8080');
 const axios = require('axios');
 const ip = '127.0.0.1';
 
